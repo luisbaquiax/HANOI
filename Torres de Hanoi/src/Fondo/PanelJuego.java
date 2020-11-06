@@ -250,7 +250,6 @@ public class PanelJuego extends JPanel implements ActionListener, MouseListener 
                 torre2.updateUI();
                 torre3.updateUI();
 
-                hanoi.setContador(0);
                 pasosEchos.setText("No. Movimientos Actual: " + numeroDePasos);
                 pasosEchos.repaint();
                 agregarAros(n);
