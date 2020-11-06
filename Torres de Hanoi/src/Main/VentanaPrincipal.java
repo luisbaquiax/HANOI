@@ -15,7 +15,7 @@ import Fondo.Mundo;
 
 /**
  *
- * @author Mateo
+ * @author Luis
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
 
@@ -29,14 +29,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             mundo = new Mundo();
 
             initComponents();
-            
+
             this.setLocationRelativeTo(null);
             this.setVisible(true);
             mundo.setBounds(0, 0, 908, 300);
             mundo.setVisible(true);
             this.add(mundo);
 
-            
         } catch (IOException ex) {
             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
