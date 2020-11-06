@@ -1,4 +1,4 @@
-package uniquindio.edu.co.hanoi;
+package Hanoi;
 
 import java.io.File;
 import java.io.FileWriter;

@@ -1,4 +1,4 @@
-package uniquindio.edu.co.mundo;
+package Fondo;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -15,9 +15,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import uniquindio.edu.co.hanoi.TorresDeHanoi;
-import uniquindio.edu.co.logica.Anillo;
-import uniquindio.edu.co.logica.Torre;
+import Hanoi.TorresDeHanoi;
+import Logica.Anillo;
+import Logica.Torre;
 
 /**
  * Clase que representa el mundo de las torres de hanoi

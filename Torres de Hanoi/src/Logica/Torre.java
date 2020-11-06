@@ -1,4 +1,4 @@
-package uniquindio.edu.co.logica;
+package Logica;
 
 import java.awt.Color;
 import java.awt.Graphics;

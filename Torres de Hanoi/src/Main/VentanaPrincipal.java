@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package uniquindio.edu.co.principal;
+package Main;
 
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import uniquindio.edu.co.mundo.Mundo;
+import Fondo.Mundo;
 
 /**
  *
