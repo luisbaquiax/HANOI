@@ -14,7 +14,7 @@ import javax.swing.border.TitledBorder;
 
 /**
  *Clase que representa el anillo o aro en el juego de torres de hanoi
- * @author Mateo Cano Alfonso <mcanoa@uqvirtual.edu.co>
+ * 
  */
 public class Anillo extends JPanel {
 

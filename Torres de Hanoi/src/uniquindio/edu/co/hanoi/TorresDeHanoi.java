@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  * Clase que se encarga de la logica del juego torres de hanoi
- * @author Mateo Cano Alfonso <mcanoa@uqvirtual.edu.co>
+ * 
  */
 public class TorresDeHanoi implements Serializable {
 

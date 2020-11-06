@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 
 /**
  * Clase que representa una torre en el juego de torres de hanoi
- * @author Mateo Cano Alfonso <mcanoa@uqvirtual.edu.co>
+ * 
  */
 public class Torre extends JPanel {
 
