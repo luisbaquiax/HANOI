@@ -15,7 +15,7 @@ import Fondo.Mundo;
 
 /**
  *
- * @author Luis & Joel
+ * @author Luis & Joel & Ludvin
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
 
