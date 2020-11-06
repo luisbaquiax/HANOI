@@ -24,21 +24,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form VentanaPrincipal
      */
-    public VentanaPrincipal() {
-        try {
-            mundo = new PanelJuego();
-
-            initComponents();
-
-            this.setLocationRelativeTo(null);
-            this.setVisible(true);
-            mundo.setBounds(0, 0, 908, 300);
-            mundo.setVisible(true);
-            this.add(mundo);
-
-        } catch (IOException ex) {
-            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public VentanaPrincipal() throws IOException {
+        mundo = new PanelJuego();
+        initComponents();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+        mundo.setBounds(0, 0, 908, 300);
+        mundo.setVisible(true);
+        this.add(mundo);
 
     }
 
@@ -99,7 +92,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VentanaPrincipal().setVisible(true);
+                try {
+                    new VentanaPrincipal().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
