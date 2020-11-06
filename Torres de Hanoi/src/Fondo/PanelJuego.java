@@ -22,9 +22,9 @@ import Logica.Torre;
 /**
  * Clase que representa el mundo de las torres de hanoi
  *
- * 
+ *
  */
-public class Mundo extends JPanel implements ActionListener, MouseListener {
+public class PanelJuego extends JPanel implements ActionListener, MouseListener {
 
     /**
      * variable que aplica la clase de torres de hanoi
@@ -40,18 +40,12 @@ public class Mundo extends JPanel implements ActionListener, MouseListener {
      * variable que cuenta el numero de pasos echos por el jugador
      */
     int numeroDePasos;
-    
-    
-    /**
-     * variable que muestras los pasos minimos requeridos
-     */
-    int pasosMinimos;
 
     /**
      * El numero de aros con los que se esta jugando
      */
     int arosJuego;
-    
+
     //torres
     Torre torre1;
     Torre torre2;
@@ -84,15 +78,15 @@ public class Mundo extends JPanel implements ActionListener, MouseListener {
     /**
      * Constructor de la clase mundo
      */
-    public Mundo() throws IOException {
+    public PanelJuego() throws IOException {
         numeroDePasos = 0;
         aros = 3;
         aroMover = null;
         seleccionado = false;
         hanoi = new TorresDeHanoi();
         hanoi.hanoi(aros, 1, 2, 3);
-        arosJuego=3;
-        
+        arosJuego = 3;
+
         this.setBackground(Color.WHITE);
 
         this.setLayout(null);
@@ -103,7 +97,7 @@ public class Mundo extends JPanel implements ActionListener, MouseListener {
         this.add(labelPasos);
 
         //Label que muestra el numero de pasos que ah echo el jugador
-        pasosEchos = new JLabel("Tu numero de movimientos: ");
+        pasosEchos = new JLabel("No. Movimientos Actual: " + numeroDePasos);
         pasosEchos.setBounds(700, 150, 180, 10);
         this.add(pasosEchos);
 
@@ -233,19 +227,19 @@ public class Mundo extends JPanel implements ActionListener, MouseListener {
             try {
                 numeroDePasos = 0;
                 int n = (int) numeroAros.getSelectedItem();
-                arosJuego=n;
+                arosJuego = n;
                 hanoi.setContador(0);
                 aros = n;
                 hanoi.setContador(0);
                 //calcula la solucion optima para resolver el juego
                 hanoi.hanoi(n, 1, 2, 3);
-                
 
-                pasosMinimos = hanoi.getContador();
+                int pasosMinimos = hanoi.getContador();
 
                 //actualiza el Label minimo de pasos
                 labelPasos.setText("Minimo de Movimientos: " + pasosMinimos);
-
+                labelPasos.repaint();
+                System.out.println(pasosMinimos);
                 //eliminar los aros de las torres
                 torre1.removeAll();
                 torre2.removeAll();
@@ -257,11 +251,12 @@ public class Mundo extends JPanel implements ActionListener, MouseListener {
                 torre3.updateUI();
 
                 hanoi.setContador(0);
-                pasosEchos.setText("Tu numero de movimientos: ");
+                pasosEchos.setText("No. Movimientos Actual: " + numeroDePasos);
+                pasosEchos.repaint();
                 agregarAros(n);
 
             } catch (IOException ex) {
-                Logger.getLogger(Mundo.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(PanelJuego.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
@@ -269,13 +264,13 @@ public class Mundo extends JPanel implements ActionListener, MouseListener {
             JFileChooser file = new JFileChooser();
             file.showSaveDialog(this);
             File guarda = file.getSelectedFile();
-            if(guarda!=null){
+            if (guarda != null) {
                 try {
-                    
+
                     hanoi.hanoi(arosJuego, 1, 2, 3);
                     hanoi.guardarSolucion(guarda);
                 } catch (IOException ex) {
-                    Logger.getLogger(Mundo.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(PanelJuego.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -289,69 +284,56 @@ public class Mundo extends JPanel implements ActionListener, MouseListener {
      */
     @Override
     public void mouseClicked(MouseEvent e) {
+        if (numeroDePasos < hanoi.getContador()) {
 
-        //mover de la torre 1 a otra torre
-        if (torre1.getComponentCount() > 0) {
-            if (e.getSource() == torre1.getComponent(torre1.getComponentCount() - 1) && seleccionado == false) {
-                //aro que voy a mover
-                aroMover = (Anillo) torre1.getComponent(torre1.getComponentCount() - 1);
-                seleccionado = true;
-                //elimino el aro de la torre
-                torre1.remove(torre1.getComponentCount() - 1);
-                torre1.updateUI();
-            }
-        }
-        //mover de la torre 2 a otra torre
-        if (torre2.getComponentCount() > 0) {
-            if (e.getSource() == torre2.getComponent(torre2.getComponentCount() - 1) && seleccionado == false) {
-
-                //aro que voy a mover
-                aroMover = (Anillo) torre2.getComponent(torre2.getComponentCount() - 1);
-                seleccionado = true;
-                //elimino el aro de la torre
-                torre2.remove(torre2.getComponentCount() - 1);
-                torre2.updateUI();
-            }
-        }
-
-        //mover de la torre 3 a otra torre
-        if (torre3.getComponentCount() > 0) {
-            if (e.getSource() == torre3.getComponent(torre3.getComponentCount() - 1) && seleccionado == false) {
-                //aro que voy a mover
-                aroMover = (Anillo) torre3.getComponent(torre3.getComponentCount() - 1);
-                seleccionado = true;
-                //elimino el aro de la torre
-                torre3.remove(torre3.getComponentCount() - 1);
-                torre3.updateUI();
-            }
-        }
-
-        //para soltar un aro en la torre 1 una vez echo click en un aro de otra torre
-        if (e.getSource() == torre1 && seleccionado == true) {
-            if (aroMover != null) {
-                //guardar el ancho y alto para acomodar
-                int x = aroMover.getX();//posicion en x
-                int h = aroMover.getHeight();//altura
-                int w = aroMover.getWidth();//anchura
-                if (torre1.getComponentCount() == 0) {
-
-                    //acomodar el aro que entra
-                    aroMover.setBounds(x, 250, w, h);
-
-                    torre1.add(aroMover);
+            //mover de la torre 1 a otra torre
+            if (torre1.getComponentCount() > 0) {
+                if (e.getSource() == torre1.getComponent(torre1.getComponentCount() - 1) && seleccionado == false) {
+                    //aro que voy a mover
+                    aroMover = (Anillo) torre1.getComponent(torre1.getComponentCount() - 1);
+                    seleccionado = true;
+                    //elimino el aro de la torre
+                    torre1.remove(torre1.getComponentCount() - 1);
                     torre1.updateUI();
-                    numeroDePasos++;
-                    aroMover = null;
-                    seleccionado = false;
+                }
+            }
+            //mover de la torre 2 a otra torre
+            if (torre2.getComponentCount() > 0) {
+                if (e.getSource() == torre2.getComponent(torre2.getComponentCount() - 1) && seleccionado == false) {
 
-                } else {
+                    //aro que voy a mover
+                    aroMover = (Anillo) torre2.getComponent(torre2.getComponentCount() - 1);
+                    seleccionado = true;
+                    //elimino el aro de la torre
+                    torre2.remove(torre2.getComponentCount() - 1);
+                    torre2.updateUI();
+                }
+            }
 
-                    //ultimo aro que hay en la torre
-                    Anillo aroPresente = (Anillo) torre1.getComponent(torre1.getComponentCount() - 1);
-                    //si retorna true
-                    if (verificar(aroPresente, aroMover)) {
+            //mover de la torre 3 a otra torre
+            if (torre3.getComponentCount() > 0) {
+                if (e.getSource() == torre3.getComponent(torre3.getComponentCount() - 1) && seleccionado == false) {
+                    //aro que voy a mover
+                    aroMover = (Anillo) torre3.getComponent(torre3.getComponentCount() - 1);
+                    seleccionado = true;
+                    //elimino el aro de la torre
+                    torre3.remove(torre3.getComponentCount() - 1);
+                    torre3.updateUI();
+                }
+            }
 
-                        aroMover.setBounds(x, 250 - (20 * torre1.getComponentCount() - 1), w, 20);
+            //para soltar un aro en la torre 1 una vez echo click en un aro de otra torre
+            if (e.getSource() == torre1 && seleccionado == true) {
+                if (aroMover != null) {
+                    //guardar el ancho y alto para acomodar
+                    int x = aroMover.getX();//posicion en x
+                    int h = aroMover.getHeight();//altura
+                    int w = aroMover.getWidth();//anchura
+                    if (torre1.getComponentCount() == 0) {
+
+                        //acomodar el aro que entra
+                        aroMover.setBounds(x, 250, w, h);
+
                         torre1.add(aroMover);
                         torre1.updateUI();
                         numeroDePasos++;
@@ -359,124 +341,124 @@ public class Mundo extends JPanel implements ActionListener, MouseListener {
                         seleccionado = false;
 
                     } else {
-                        JOptionPane.showMessageDialog(null, "Movimiento inavlido");
+
+                        //ultimo aro que hay en la torre
+                        Anillo aroPresente = (Anillo) torre1.getComponent(torre1.getComponentCount() - 1);
+                        //si retorna true
+                        if (verificar(aroPresente, aroMover)) {
+
+                            aroMover.setBounds(x, 250 - (20 * torre1.getComponentCount() - 1), w, 20);
+                            torre1.add(aroMover);
+                            torre1.updateUI();
+                            numeroDePasos++;
+                            aroMover = null;
+                            seleccionado = false;
+
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Movimiento inavlido");
+                        }
                     }
                 }
             }
-        }
 
-        //para soltar un aro en la torre 2 una vez echo click en un aro de otra torre
-        if (e.getSource() == torre2 && seleccionado == true) {
-            if (aroMover != null) {
-                //guardar el ancho y alto para acomodar
-                int x = aroMover.getX();//posicion en x
-                int w = aroMover.getWidth();//anchura
-                if (torre2.getComponentCount() == 0) {
+            //para soltar un aro en la torre 2 una vez echo click en un aro de otra torre
+            if (e.getSource() == torre2 && seleccionado == true) {
+                if (aroMover != null) {
+                    //guardar el ancho y alto para acomodar
+                    int x = aroMover.getX();//posicion en x
+                    int w = aroMover.getWidth();//anchura
+                    if (torre2.getComponentCount() == 0) {
 
-                    //acomodar el aro que entra
-                    aroMover.setBounds(x, 250, w, 20);
+                        //acomodar el aro que entra
+                        aroMover.setBounds(x, 250, w, 20);
 
-                    torre2.add(aroMover);
-                    torre2.updateUI();
-
-                    //contador que aumento para contar el numero de pasos del usuario
-                    numeroDePasos++;
-
-                    //Para actualizar el Label de numero de pasos que hace el jugador
-                    pasosEchos.setText("Tu numero de movimientos: " + numeroDePasos);
-
-                    aroMover = null;
-                    seleccionado = false;
-
-                } else {
-                    //ultimo aro que hay en la torre
-                    Anillo aroPresente = (Anillo) torre2.getComponent(torre2.getComponentCount() - 1);
-
-                    //si retorna true
-                    if (verificar(aroPresente, aroMover)) {
-
-                        aroMover.setBounds(x, 250 - (20 * torre2.getComponentCount() - 1), w, 20);
                         torre2.add(aroMover);
                         torre2.updateUI();
 
-                        //contador que aumento para contar el numero de pasos del usuario
-                        numeroDePasos++;
-
-                        //Para actualizar el Label de numero de pasos que hace el jugador
-                        pasosEchos.setText("Tu numero de movimientos: " + numeroDePasos);
+                        sumarPaso();
+                        escribirNumeroMovimientos();
 
                         aroMover = null;
                         seleccionado = false;
+
                     } else {
-                        JOptionPane.showMessageDialog(null, "Movimiento invalido");
+                        //ultimo aro que hay en la torre
+                        Anillo aroPresente = (Anillo) torre2.getComponent(torre2.getComponentCount() - 1);
+
+                        //si retorna true
+                        if (verificar(aroPresente, aroMover)) {
+
+                            aroMover.setBounds(x, 250 - (20 * torre2.getComponentCount() - 1), w, 20);
+                            torre2.add(aroMover);
+                            torre2.updateUI();
+
+                            sumarPaso();
+                            escribirNumeroMovimientos();
+
+                            aroMover = null;
+                            seleccionado = false;
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Movimiento invalido");
+                        }
                     }
                 }
             }
-        }
 
-        //para soltar un aro en la torre 3 una vez echo click en un aro de la otra torre
-        if (e.getSource() == torre3 && seleccionado == true) {
-            if (aroMover != null) {
+            //para soltar un aro en la torre 3 una vez echo click en un aro de la otra torre
+            if (e.getSource() == torre3 && seleccionado == true) {
+                if (aroMover != null) {
 
-                //guardar el ancho y alto para acomodar
-                int x = aroMover.getX();//posicion en x
-                int h = aroMover.getHeight();//altura
-                int w = aroMover.getWidth();//anchura
-                if (torre3.getComponentCount() == 0) {
+                    //guardar el ancho y alto para acomodar
+                    int x = aroMover.getX();//posicion en x
+                    int h = aroMover.getHeight();//altura
+                    int w = aroMover.getWidth();//anchura
+                    if (torre3.getComponentCount() == 0) {
 
-                    //acomodar el aro que entra
-                    aroMover.setBounds(x, 250, w, h);
+                        //acomodar el aro que entra
+                        aroMover.setBounds(x, 250, w, h);
 
-                    torre3.add(aroMover);
-                    torre3.updateUI();
-                    aroMover = null;
-
-                    //contador que aumento para contar el numero de pasos del usuario
-                    numeroDePasos++;
-
-                    //Para actualizar el Label de numero de pasos que hace el jugador
-                    pasosEchos.setText("Tu numero de movimientos: " + numeroDePasos);
-
-                    seleccionado = false;
-
-                } else {
-
-                    //ultimo aro que hay en la torre
-                    Anillo aroPresente = (Anillo) torre3.getComponent(torre3.getComponentCount() - 1);
-                    //si retorna true
-                    if (verificar(aroPresente, aroMover)) {
-
-                        aroMover.setBounds(x, 250 - (20 * torre3.getComponentCount() - 1), w, 20);
                         torre3.add(aroMover);
                         torre3.updateUI();
-
-                        //contador que aumento para contar el numero de pasos del usuario
-                        numeroDePasos++;
-
-                        //Para actualizar el Label de numero de pasos que hace el jugador
-                        pasosEchos.setText("Tu numero de movimientos: " + numeroDePasos);
-
                         aroMover = null;
+
+                        sumarPaso();
+                        escribirNumeroMovimientos();
+
                         seleccionado = false;
+
                     } else {
-                        JOptionPane.showMessageDialog(null, "Movimiento inavlido");
+
+                        //ultimo aro que hay en la torre
+                        Anillo aroPresente = (Anillo) torre3.getComponent(torre3.getComponentCount() - 1);
+                        //si retorna true
+                        if (verificar(aroPresente, aroMover)) {
+
+                            aroMover.setBounds(x, 250 - (20 * torre3.getComponentCount() - 1), w, 20);
+                            torre3.add(aroMover);
+                            torre3.updateUI();
+
+                            sumarPaso();
+                            escribirNumeroMovimientos();
+
+                            aroMover = null;
+                            seleccionado = false;
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Movimiento inavlido");
+                        }
                     }
                 }
             }
-        }
 
-        if (e.getSource() == torre3) {
-            if (hanoi.verificarFinalJuego(aros, torre3.getComponentCount()) == true) {
-                JOptionPane.showMessageDialog(null, "Felicitaciones termino el juego");
+            if (e.getSource() == torre3) {
+                if (hanoi.verificarFinalJuego(aros, torre3.getComponentCount()) == true) {
+                    JOptionPane.showMessageDialog(null, "Felicitaciones termino el juego");
 
-                System.out.println(numeroDePasos);
+                    System.out.println(numeroDePasos);
 
+                }
             }
-        }
-        
-        
-        if (numeroDePasos > pasosMinimos) {
-            JOptionPane.showMessageDialog(null, "Sobrepaso los pasos minimos");
+        } else {
+            JOptionPane.showMessageDialog(null, "Numero de pasos minimos sobrepasodos, vuelve a intentarlo", "Fallaste", 0);
         }
     }
 
@@ -517,4 +499,21 @@ public class Mundo extends JPanel implements ActionListener, MouseListener {
             return false;
         }
     }
+
+    /**
+     * Suma si un movimiento es valido
+     */
+    public void sumarPaso() {
+        numeroDePasos++;
+    }
+
+    /**
+     * Para actualizar el Label de numero de pasos que hace el jugador
+     */
+    public void escribirNumeroMovimientos() {
+        pasosEchos.setText("No. Movimientos Actual: " + numeroDePasos);
+        pasosEchos.repaint();
+        pasosEchos.revalidate();
+    }
+
 }

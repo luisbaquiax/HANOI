@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import Fondo.Mundo;
+import Fondo.PanelJuego;
 
 /**
  *
@@ -19,14 +19,14 @@ import Fondo.Mundo;
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
 
-    Mundo mundo;
+    PanelJuego mundo;
 
     /**
      * Creates new form VentanaPrincipal
      */
     public VentanaPrincipal() {
         try {
-            mundo = new Mundo();
+            mundo = new PanelJuego();
 
             initComponents();
 
