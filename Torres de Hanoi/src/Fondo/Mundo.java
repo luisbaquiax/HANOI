@@ -40,6 +40,12 @@ public class Mundo extends JPanel implements ActionListener, MouseListener {
      * variable que cuenta el numero de pasos echos por el jugador
      */
     int numeroDePasos;
+    
+    
+    /**
+     * variable que muestras los pasos minimos requeridos
+     */
+    int pasosMinimos;
 
     /**
      * El numero de aros con los que se esta jugando
@@ -235,7 +241,7 @@ public class Mundo extends JPanel implements ActionListener, MouseListener {
                 hanoi.hanoi(n, 1, 2, 3);
                 
 
-                int pasosMinimos = hanoi.getContador();
+                pasosMinimos = hanoi.getContador();
 
                 //actualiza el Label minimo de pasos
                 labelPasos.setText("Minimo de Movimientos: " + pasosMinimos);
@@ -466,6 +472,11 @@ public class Mundo extends JPanel implements ActionListener, MouseListener {
                 System.out.println(numeroDePasos);
 
             }
+        }
+        
+        
+        if (numeroDePasos > pasosMinimos) {
+            JOptionPane.showMessageDialog(null, "Sobrepaso los pasos minimos");
         }
     }
 
